@@ -1,0 +1,7 @@
+"Turn off heap address randomization: sysctl -w kernel.randomize_va_space=0\n"
+
+Ha az -m32 nem működik
+
+apt-get install gcc-multilib
+
+gcc filename.c -o filename -ggdb -fno-stack-protector -z execstack -m32 -mpreferred-stack-boundary=2 -no-pie
