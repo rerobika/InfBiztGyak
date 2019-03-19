@@ -1,0 +1,3 @@
+- Határozd meg, mi volt a SECRET0 .. SECRET3 konstansok értéke.
+- Érd el a progam újrafordítása nélkül, hogy a program kiírja
+  valamelyik "... value is overwritten" szöveget.

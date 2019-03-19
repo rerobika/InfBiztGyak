@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gcc -m32 -DSECRET0=0xDEADBEEF -DSECRET1=0xCAFEBABE -DSECRET2=0xF1B0ACC1 -DSECRET3=0x52A605FA -o printffsb printffsb.c
